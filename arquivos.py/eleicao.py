@@ -9,7 +9,7 @@ from moviepy.editor import VideoFileClip
 class Partido:
     partidos = []
 
-    def __init__(self, nome):
+    def _init_(self, nome):
         self.nome = nome
         self.membros = []
         Partido.partidos.append(self)
@@ -23,11 +23,11 @@ class Partido:
         for partido in cls.partidos:
             print(partido)
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.nome}"
         
 class Eleitor:
-    def __init__(self, nome, titulo, local, votou=False):
+    def _init_(self, nome, titulo, local, votou=False):
         self.__nome = nome
         self.__titulo = titulo
         self.local= local
@@ -45,7 +45,7 @@ class Eleitor:
     def set_titulo(self, titulo):
         self.__titulo = titulo
 
-    def __str__(self):
+    def _str_(self):
         return f"Nome: {self.__nome}\n"\
         f"titulo: {self.__titulo}\n"\
         f"Cidade: {self.local.cidade.nome}\n"\
@@ -57,18 +57,19 @@ class Eleitor:
     
         f"---------------------------------"
 
+class Comicio(ABC):
+    @abstractmethod
+    def realizar_comicio():
+        pass
+
 class Candidato(Eleitor, Partido):
-    def __init__(self, nome, titulo, local, partido,numeroEleitoral,votou=False):
-        super().__init__(nome, titulo, local)
+    def _init_(self, nome, titulo, local, partido,numeroEleitoral,votou=False):
+        super()._init_(nome, titulo, local)
         self.partido = partido
         self.numeroEleitoral=numeroEleitoral
         self.votou=votou
 
-    @abstractmethod
-    def realizar_comicio(self):
-        pass
-
-    def __str__(self):
+    def _str_(self):
         return f"-----------------------------------\n"\
         f"Nome: {self.get_nome()}\n"\
         f"titulo: {self.get_titulo()}\n"\
@@ -82,9 +83,9 @@ class Candidato(Eleitor, Partido):
         f"-----------------------------------"
 
 
-class Prefeito(Candidato):
-    def __init__(self, nome, titulo, local, partido, numeroEleitoral, votou=False):
-        super().__init__(nome, titulo, local, partido, numeroEleitoral,votou=False)
+class Prefeito(Candidato,Comicio):
+    def _init_(self, nome, titulo, local, partido, numeroEleitoral, votou=False):
+        super()._init_(nome, titulo, local, partido, numeroEleitoral,votou=False)
         self.votou=votou
         self.votos=0
 
@@ -101,20 +102,20 @@ class Prefeito(Candidato):
             return f"Não há proposta desse candidato"
 
     def realizar_comicio(self):
-        print("Realizando comicio...")
+        print(f"Prefeito {self.get_nome()} realizando Comicio.")
 
 class Vereador(Candidato):
-    def __init__(self, nome, titulo, local, partido, numeroEleitoral, votou=False):
-        super().__init__(nome, titulo, local, partido, numeroEleitoral, votou=False)
+    def _init_(self, nome, titulo, local, partido, numeroEleitoral, votou=False):
+        super()._init_(nome, titulo, local, partido, numeroEleitoral, votou=False)
         self.votos=0
         self.votou=votou
     
-    @classmethod
     def realizar_comicio(self):
-        print("Realizando comicio...")
+        print(f"Vereador {self.get_nome()} realizando Comicio.")
+
 
 class Cidade:
-    def __init__(self,nome,estado,cep):
+    def _init_(self,nome,estado,cep):
         self.nome=nome
         self.estado=estado
         self.cep=cep
@@ -129,7 +130,7 @@ class Debate:
 class UrnaEletronica(GerenciadorEleitoral):
 
 
-    def __init__(self, local, status=False):
+    def _init_(self, local, status=False):
         self.local = local
         self.status = status
         self.resultadoPrefeito = {}
@@ -202,7 +203,7 @@ class UrnaEletronica(GerenciadorEleitoral):
             print("Votos em nulo: ",self.votosEmNuloVereador)
             input("\nAperte enter para voltar pro menu")
 
-    def __str__(self):
+    def _str_(self):
         return f"Urna Eletrônica:\n" \
                f"Cidade: {self.local.cidade.nome}\n"\
                f"Estado: {self.local.cidade.estado}\n"\
@@ -214,7 +215,7 @@ class UrnaEletronica(GerenciadorEleitoral):
                f"-------------------------------------------------------"
     
 class Local:
-    def __init__(self, cidade, escola, zona, sessao):
+    def _init_(self, cidade, escola, zona, sessao):
         self.cidade=cidade
         self.escola = escola
         self.zona = zona
