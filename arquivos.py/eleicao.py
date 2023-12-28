@@ -5,7 +5,7 @@ import pandas as pd
 from gerenciador import GerenciadorEleitoral
 from moviepy.editor import VideoFileClip
 
-
+#Class responsável por designar os partidos
 class Partido:
     partidos = []
 
@@ -14,6 +14,7 @@ class Partido:
         self.membros = []
         Partido.partidos.append(self)
 
+    #Metódo responsável
     def adicionar_membros(self, membro):
         if isinstance(membro, Candidato):
             self.membros.append(membro)
@@ -44,6 +45,9 @@ class Eleitor:
 
     def set_titulo(self, titulo):
         self.__titulo = titulo
+    
+    def get_local(self):
+        self.local
 
     def _str_(self):
         return f"Nome: {self.__nome}\n"\
@@ -113,7 +117,6 @@ class Vereador(Candidato):
     def realizar_comicio(self):
         print(f"Vereador {self.get_nome()} realizando Comicio.")
 
-
 class Cidade:
     def _init_(self,nome,estado,cep):
         self.nome=nome
@@ -128,7 +131,6 @@ class Debate:
         clip.preview()
 
 class UrnaEletronica(GerenciadorEleitoral):
-
 
     def _init_(self, local, status=False):
         self.local = local
@@ -151,9 +153,9 @@ class UrnaEletronica(GerenciadorEleitoral):
         else:
             print("Candidados a Prefeitos:")
             for prefeito in GerenciadorEleitoral.prefeitos:
-                print(f"{prefeito.get_nome()} Numero Eleitoral:{prefeito.numeroEleitoral}")
+                print(f"{prefeito.get_nome()} - {prefeito.numeroEleitoral}")
             print("Voto Nulo - 01")
-            numero= input("Informe seu Voto para Prefeito: ")
+            numero= input("Informe seu voto: ")
             for prefeito in GerenciadorEleitoral.prefeitos:
                 if numero==prefeito.numeroEleitoral:
                     self.resultadoPrefeito[prefeito.get_nome()] = self.resultadoPrefeito.get(prefeito.get_nome(), 0) + 1
@@ -166,18 +168,17 @@ class UrnaEletronica(GerenciadorEleitoral):
                     print("-"*30)
                     print("Candidatos a Vereadores")
             for vereador in GerenciadorEleitoral.vereadores:
-                print(f"{vereador.get_nome()} Numero Eleitoral:{vereador.numeroEleitoral}")
-            numero= input("Informe seu Voto para Vereador: ")
+                print(f"{vereador.get_nome()} - {vereador.numeroEleitoral}")
+            numero= input("Informe seu voto: ")
             for vereador in GerenciadorEleitoral.vereadores:
                 if numero==vereador.numeroEleitoral:
                     self.resultadoVereador[vereador.get_nome()] = self.resultadoVereador.get(vereador.get_nome(), 0) + 1
                     eleitor.votou=True
-                    return f"Voto concluido completamente."
+                    return f"Voto conclído"
                 elif(numero=="01"):
                     self.votosEmNuloVereador+=1
                     eleitor.votou=True
                     return f"Voto concluido completamente."
-                     
     
     def encerrar_votacao(self):
         if self.status==True:

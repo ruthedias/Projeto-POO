@@ -68,12 +68,15 @@ if __name__=="__main__":
             input("\nAperte enter para voltar pro menu")
 
         elif opcao == 5:
+            candidatoEncontrado = False
             os.system('cls')
             candidato= input("Digite o nome do candidato que você deseja saber a proposta: ")
             for prefeito in GerenciadorEleitoral.prefeitos:
                 if candidato==prefeito.get_nome():
                     print ("Candidato encontrado")
                     prefeito.propostas(candidato)
+                    candidatoEncontrado = True
+            if(candidatoEncontrado==False): print("Candidato não encontrado")
             input("\nAperte enter para voltar pro menu")
             
         elif opcao == 6:
@@ -83,6 +86,7 @@ if __name__=="__main__":
             input("\nAperte enter para voltar pro menu")
 
         elif opcao == 7:
+            EleitorEncontrado = False
             os.system('cls')
             eleitor= input("Digite o nome do eleitor: ")
             titulo= input("Digite o titulo do eleitor: ")
@@ -90,6 +94,8 @@ if __name__=="__main__":
                 if eleitores.get_nome()==eleitor:
                     if eleitores.get_titulo()==titulo:
                         print(eleitores)
+                        EleitorEncontrado = True
+            if(EleitorEncontrado==False): print("Eleitor não consta no sistema")                 
             input("\nAperte enter para voltar pro menu")
 
         elif opcao == 8:
